@@ -243,15 +243,16 @@ The AWS provider is configured to skip account/credential preflight checks for p
 - Creates a plan with `-refresh=false`.
 - Uploads each plan text file as a workflow artifact.
 
+
 ## Assessment verification checklist
 
-- [ ] `docker compose up -d` succeeds and PostgreSQL is healthy.
-- [ ] Migrations and seed data are loaded.
-- [ ] Booking count is at least 100.
-- [ ] Query plan can be inspected with `EXPLAIN (ANALYZE, BUFFERS)`.
-- [ ] `./scripts/backup.sh` creates a timestamped dump.
-- [ ] `./scripts/restore.sh` restores into a fresh database.
-- [ ] Source and restored row counts match.
-- [ ] `terraform fmt -recursive` succeeds.
-- [ ] `terraform init`, `terraform validate`, and `terraform plan -refresh=false` are reviewed for both environments.
-- [ ] GitHub Actions workflow runs successfully on a pull request.
+- [x] `docker compose up -d` succeeds and PostgreSQL is healthy.
+- [x] Migrations and seed data are loaded.
+- [x] Booking count is at least 100.
+- [x] Query plan can be inspected with `EXPLAIN (ANALYZE, BUFFERS)`.
+- [x] `./scripts/backup.sh` creates a timestamped dump.
+- [x] `./scripts/restore.sh` restores into a fresh database.
+- [x] Source and restored row counts match.
+- [x] `terraform fmt -recursive` succeeds.
+- [x] `terraform init`, `terraform validate`, and `terraform plan -refresh=false` are reviewed for both environments.
+- [x] GitHub Actions workflow runs successfully on a pull request.
