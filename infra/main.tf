@@ -1,5 +1,5 @@
 module "network" {
-  source                  = "modules/network"
+  source                  = "./modules/network"
   name                    = local.name
   vpc_cidr                = var.vpc_cidr
   public_subnet_cidrs     = var.public_subnet_cidrs
@@ -64,7 +64,7 @@ resource "aws_security_group" "rds" {
 }
 
 module "ecs" {
-  source                 = "modules/ecs"
+  source                 = "./modules/ecs"
   name                   = local.name
   vpc_id                 = module.network.vpc_id
   public_subnet_ids      = module.network.public_subnet_ids
@@ -80,7 +80,7 @@ module "ecs" {
 }
 
 module "rds" {
-  source                  = "modules/rds"
+  source                  = "./modules/rds"
   name                    = local.name
   private_db_subnet_ids   = module.network.private_db_subnet_ids
   rds_security_group_id   = aws_security_group.rds.id
