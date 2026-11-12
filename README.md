@@ -175,11 +175,11 @@ The restore script creates the target database if needed, terminates existing co
 Verify that the restore worked:
 
 ```bash
-docker compose exec -T db psql -U ${POSTGRES_USER} -d ${RESTORE_DB} -c \
+docker compose exec -T db psql -U ${POSTGRES_USER} -d bookingdb_restore -c \
   "SELECT COUNT(*) AS booking_count FROM hotel_bookings;"
-docker compose exec -T db psql -U appuser -d bookingdb_restore -c \
+docker compose exec -T db psql -U ${POSTGRES_USER} -d bookingdb_restore -c \
   "SELECT COUNT(*) AS event_count FROM booking_events;"
-docker compose exec -T db psql -U appuser -d bookingdb_restore -c \
+docker compose exec -T db psql -U ${POSTGRES_USER} -d bookingdb_restore -c \
   "SELECT city, status, COUNT(*) FROM hotel_bookings GROUP BY city, status ORDER BY city, status;"
 ```
 
