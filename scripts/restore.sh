@@ -8,7 +8,7 @@ if [ -f .env ]; then
 fi
 
 DB_CONTAINER="${DB_CONTAINER:-booking-postgres}"
-DB_USER="${DB_USER:-appuser}"
+DB_USER="${POSTGRES_USER:-appuser}"
 TARGET_DB="${2:-${RESTORE_DB:-bookingdb_restore}}"
 BACKUP_FILE="${1:-}"
 
