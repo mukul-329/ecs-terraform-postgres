@@ -25,7 +25,6 @@ Docker Compose -> PostgreSQL -> migrations -> seed data -> indexes
 The Terraform configuration is infrastructure-as-code only. No AWS deployment is required for this assessment. The local database workflow is independent of AWS.
 
 ## Repository layout
-
 ```text
 .
 ├── .github/workflows/infra-ci.yml
