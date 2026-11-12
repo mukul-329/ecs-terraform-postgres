@@ -40,7 +40,7 @@ jobs:
         run: terraform fmt -check -recursive
 
       - name: Terraform init (local backend)
-        run: terraform init
+        run: terraform init -backend=false
 
       - name: Terraform validate
         run: terraform validate
