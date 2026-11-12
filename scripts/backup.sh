@@ -8,7 +8,7 @@ if [ -f .env ]; then
 fi
 
 DB_CONTAINER="${DB_CONTAINER:-booking-postgres}"
-DB_NAME="${POSTGRES-DB:-bookingdb}"
+DB_NAME="${POSTGRES_DB:-bookingdb}"
 DB_USER="${POSTGRES_USER:-appuser}"
 BACKUP_DIR="${BACKUP_DIR:-backups}"
 TIMESTAMP="$(date -u +'%Y%m%d_%H%M%S')"
