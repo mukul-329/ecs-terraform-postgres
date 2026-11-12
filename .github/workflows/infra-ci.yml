@@ -19,12 +19,13 @@ jobs:
     name: Terraform - ${{ matrix.environment }}
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
+      max-parallel: 1
+      fail-fast: true
       matrix:
         environment: [dev, prod]
     defaults:
       run:
-        working-directory: infra/envs/${{ matrix.environment }}
+        working-directory: infra/
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -35,16 +36,16 @@ jobs:
           terraform_version: 1.9.8
 
       - name: Terraform format
-        run: terraform fmt -check -recursive ../../..
+        run: terraform fmt -check -recursive
 
       - name: Terraform init (local backend)
-        run: terraform init -backend-config=backend.hcl
+        run: terraform init
 
       - name: Terraform validate
         run: terraform validate
 
       - name: Terraform plan
-        run: set -o pipefail; terraform plan -refresh=false -no-color | tee terraform-plan.txt
+        run: set -o pipefail; terraform plan -refresh=false -no-color -var-file=envs/${{ matrix.environment }}/terraform.tfvars | tee terraform-plan.txt
 
       - name: Upload Terraform plan output
         if: always()
