@@ -3,7 +3,6 @@
 A DevOps project demonstrating reusable AWS infrastructure with Terraform and PostgreSQL database.
 
 ## Architecture
-
 ```text
 Internet
    |
