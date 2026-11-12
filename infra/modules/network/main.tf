@@ -2,7 +2,7 @@ resource "aws_vpc" "this" {
   cidr_block           = var.vpc_cidr
   enable_dns_hostnames = true
   enable_dns_support   = true
-  tags = merge(var.tags, { Name = "${var.name}-vpc" })
+  tags                 = merge(var.tags, { Name = "${var.name}-vpc" })
 }
 
 resource "aws_internet_gateway" "this" {
@@ -16,7 +16,7 @@ resource "aws_subnet" "public" {
   cidr_block              = var.public_subnet_cidrs[count.index]
   availability_zone       = var.availability_zones[count.index]
   map_public_ip_on_launch = true
-  tags = merge(var.tags, { Name = "${var.name}-public-${count.index + 1}", Tier = "public" })
+  tags                    = merge(var.tags, { Name = "${var.name}-public-${count.index + 1}", Tier = "public" })
 }
 
 resource "aws_subnet" "private_app" {
@@ -24,7 +24,7 @@ resource "aws_subnet" "private_app" {
   vpc_id            = aws_vpc.this.id
   cidr_block        = var.private_app_subnet_cidrs[count.index]
   availability_zone = var.availability_zones[count.index]
-  tags = merge(var.tags, { Name = "${var.name}-app-${count.index + 1}", Tier = "private-app" })
+  tags              = merge(var.tags, { Name = "${var.name}-app-${count.index + 1}", Tier = "private-app" })
 }
 
 resource "aws_subnet" "private_db" {
@@ -32,7 +32,7 @@ resource "aws_subnet" "private_db" {
   vpc_id            = aws_vpc.this.id
   cidr_block        = var.private_db_subnet_cidrs[count.index]
   availability_zone = var.availability_zones[count.index]
-  tags = merge(var.tags, { Name = "${var.name}-db-${count.index + 1}", Tier = "private-db" })
+  tags              = merge(var.tags, { Name = "${var.name}-db-${count.index + 1}", Tier = "private-db" })
 }
 
 resource "aws_route_table" "public" {

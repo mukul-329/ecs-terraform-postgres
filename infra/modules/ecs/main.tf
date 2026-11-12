@@ -49,9 +49,9 @@ resource "aws_iam_role" "execution" {
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Effect = "Allow"
+      Effect    = "Allow"
       Principal = { Service = "ecs-tasks.amazonaws.com" }
-      Action = "sts:AssumeRole"
+      Action    = "sts:AssumeRole"
     }]
   })
   tags = var.tags
@@ -76,10 +76,10 @@ resource "aws_ecs_task_definition" "this" {
   memory                   = var.task_memory
   execution_role_arn       = aws_iam_role.execution.arn
   container_definitions = jsonencode([{
-    name      = "web"
-    image     = var.container_image
-    essential = true
-    user      = "101"
+    name                   = "web"
+    image                  = var.container_image
+    essential              = true
+    user                   = "101"
     readonlyRootFilesystem = false
     portMappings = [{
       containerPort = var.container_port
@@ -101,11 +101,11 @@ resource "aws_ecs_task_definition" "this" {
 data "aws_region" "current" {}
 
 resource "aws_ecs_service" "this" {
-  name            = "${var.name}-service"
-  cluster         = aws_ecs_cluster.this.id
-  task_definition = aws_ecs_task_definition.this.arn
-  desired_count   = var.desired_count
-  launch_type     = "FARGATE"
+  name                               = "${var.name}-service"
+  cluster                            = aws_ecs_cluster.this.id
+  task_definition                    = aws_ecs_task_definition.this.arn
+  desired_count                      = var.desired_count
+  launch_type                        = "FARGATE"
   deployment_minimum_healthy_percent = 50
   deployment_maximum_percent         = 200
 
