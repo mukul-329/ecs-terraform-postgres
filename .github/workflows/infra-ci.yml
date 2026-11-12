@@ -4,12 +4,12 @@ on:
   pull_request:
     paths:
       - "infra/**"
-      - ".github/workflows/terraform.yml"
+      - ".github/workflows/infra-ci.yml"
   push:
     branches: ["main"]
     paths:
       - "infra/**"
-      - ".github/workflows/terraform.yml"
+      - ".github/workflows/infra-ci.yml"
 
 permissions:
   contents: read
