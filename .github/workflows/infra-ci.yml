@@ -1,6 +1,7 @@
 name: Terraform validation and plan
 
 on:
+  workflow_dispatch: 
   pull_request:
     paths:
       - "infra/**"
