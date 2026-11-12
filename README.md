@@ -65,6 +65,11 @@ The Terraform configuration is infrastructure-as-code only. No AWS deployment is
 
 From the repository root:
 
+Set the environments variables as mentioned in .env.example
+```bash
+cp .env.example .env
+```
+
 ```bash
 docker compose up -d
 docker compose ps
@@ -73,7 +78,8 @@ docker compose ps
 Wait until PostgreSQL reports healthy:
 
 ```bash
-docker compose exec -T db pg_isready -U ${POSTGRES_USER} -d {POSTGRES_DB}
+source .env
+docker compose exec -T db pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
 ```
 
 The database uses a named Docker volume, so data survives container recreation. The credentials are for local assessment use only and must not be reused in production.
@@ -89,10 +95,10 @@ docker compose logs db
 Verify the schema and row counts:
 
 ```bash
-docker compose exec -T db psql -U appuser -d bookingdb -c '\dt'
-docker compose exec -T db psql -U appuser -d bookingdb -c \
+docker compose exec -T db psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} -c '\dt'
+docker compose exec -T db psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} -c \
   "SELECT COUNT(*) AS booking_count, COUNT(DISTINCT city) AS cities, COUNT(DISTINCT org_id) AS organizations FROM hotel_bookings;"
-docker compose exec -T db psql -U appuser -d bookingdb -c \
+docker compose exec -T db psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} -c \
   "SELECT COUNT(*) AS event_count FROM booking_events;"
 ```
 
@@ -136,7 +142,7 @@ The planner decides whether an index scan is cheaper than a sequential scan base
 Inspect the plan:
 
 ```bash
-docker compose exec -T db psql -U appuser -d bookingdb -c \
+docker compose exec -T db psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} -c \
   "EXPLAIN (ANALYZE, BUFFERS) SELECT org_id, status, COUNT(*), SUM(amount) FROM hotel_bookings WHERE city = 'delhi' AND created_at >= NOW() - INTERVAL '30 days' GROUP BY org_id, status;"
 ```
 
@@ -149,12 +155,6 @@ Create a timestamped PostgreSQL custom-format dump:
 ```
 
 By default, dumps are written to `backups/`. The script prints the created file path. The backup directory is intentionally ignored by Git.
-
-Optional environment variables:
-
-```bash
-DB_CONTAINER=booking-postgres DB_NAME=bookingdb DB_USER=appuser BACKUP_DIR=backups ./scripts/backup.sh
-```
 
 ## 5. Restore into a fresh database
 
