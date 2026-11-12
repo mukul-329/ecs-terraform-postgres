@@ -1,0 +1,11 @@
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+*.auto.tfvars
+!*.example.auto.tfvars
+.env
+backups/*
+!backups/.gitkeep
+.DS_Store

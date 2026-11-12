@@ -1,0 +1,14 @@
+environment = "prod"
+vpc_cidr = "10.20.0.0/16"
+availability_zones = ["ap-south-1a", "ap-south-1b"]
+public_subnet_cidrs = ["10.20.1.0/24", "10.20.2.0/24"]
+private_app_subnet_cidrs = ["10.20.11.0/24", "10.20.12.0/24"]
+private_db_subnet_cidrs = ["10.20.21.0/24", "10.20.22.0/24"]
+ecs_desired_count = 2
+ecs_task_cpu = 512
+ecs_task_memory = 1024
+rds_instance_class = "db.t3.small"
+rds_allocated_storage = 50
+rds_backup_retention_days = 14
+rds_deletion_protection = true
+rds_multi_az = true

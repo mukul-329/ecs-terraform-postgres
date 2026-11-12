@@ -1,0 +1,56 @@
+name: Terraform validation and plan
+
+on:
+  pull_request:
+    paths:
+      - "infra/**"
+      - ".github/workflows/terraform.yml"
+  push:
+    branches: ["main"]
+    paths:
+      - "infra/**"
+      - ".github/workflows/terraform.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    name: Terraform - ${{ matrix.environment }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        environment: [dev, prod]
+    defaults:
+      run:
+        working-directory: infra/envs/${{ matrix.environment }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.8
+
+      - name: Terraform format
+        run: terraform fmt -check -recursive ../../..
+
+      - name: Terraform init (local backend)
+        run: terraform init -backend-config=backend.hcl
+
+      - name: Terraform validate
+        run: terraform validate
+
+      - name: Terraform plan
+        run: set -o pipefail; terraform plan -refresh=false -no-color | tee terraform-plan.txt
+
+      - name: Upload Terraform plan output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-plan-${{ matrix.environment }}
+          path: infra/envs/${{ matrix.environment }}/terraform-plan.txt
+          if-no-files-found: warn
+          retention-days: 7
